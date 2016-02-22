@@ -46,7 +46,7 @@ class TicketHandler(BaseHandler):
 
     @tornado.gen.coroutine
     def post(self, *args, **kwargs):
-        province = self.get_body_argument('province', None)
+        #province = self.get_body_argument('province', None)
         school = self.get_body_argument('school', None)
         name = self.get_body_argument('name', None)
         cet = int(self.get_body_argument('cet_type', None))
