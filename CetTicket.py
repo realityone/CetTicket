@@ -115,7 +115,7 @@ class CetTicket(object):
     """
         usage:
         ct = CetTicket()
-        print ct.find_ticket_number(b'浙江', b'浙江海洋学院', b'XXX', cet_type=2)
+        print ct.find_ticket_number(b'重庆', b'重庆邮电大学', b'刘晨凌', cet_type=2)
     """
 
     search_url = 'http://find.cet.99sushe.com/search'
@@ -139,7 +139,7 @@ class CetTicket(object):
                                                                                                 school, name, 
                                                                                                 examroom, random_mac())
 
-        param_data = param_data.encode('gbk')
+        param_data = param_data.encode('gb2312')
         encrypted_data = cipher.encrypt_request_data(param_data)
 
         resp = requests.post(url=cls.search_url, data=encrypted_data)
@@ -152,7 +152,7 @@ class CetTicket(object):
 
     @classmethod
     def get_score(cls, ticket_number, name):
-        name = name.encode('gbk')
+        name = name.encode('gb2312')
 
         params_dict = {
             'id': ticket_number,
@@ -162,7 +162,7 @@ class CetTicket(object):
         resp = requests.post(url=cls.score_url,
                              data=params_dict,
                              headers={'Referer': 'http://cet.99sushe.com/'})
-        score_data = resp.content.decode('gbk')
+        score_data = resp.content.decode('gb2312')
         if len(score_data) < 10:
             return dict(error=True)
         score_data = score_data.split(',')
@@ -178,4 +178,7 @@ class CetTicket(object):
         return score
 
 if __name__ == '__main__':
+    # ct = CetTicket()
+    # print ct.find_ticket_number(u'重庆', u'重庆邮电大学', u'刘慧芝', cet_type=CetTicket.CET4)
+    # print CetTicket.get_score('508160151209325', u'刘晨凌')
     pass
