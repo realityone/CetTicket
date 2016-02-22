@@ -45,6 +45,7 @@ class TicketHandler(BaseHandler):
     executor = ThreadPoolExecutor(max_workers=5)
 
     @tornado.gen.coroutine
+    province = self.get_body_argument('province', None)
     def post(self, *args, **kwargs):
         #province = self.get_body_argument('province', None)
         school = self.get_body_argument('school', None)
@@ -52,7 +53,6 @@ class TicketHandler(BaseHandler):
         cet = int(self.get_body_argument('cet_type', None))
 
         def find_ticket_number(province, school, name, cet_type):
-            province = self.get_body_argument('province', None)
             result = dict(error=False)
             try:
                 result['ticket_number'] = CetTicket.find_ticket_number(province, school, name, cet_type=cet_type)
