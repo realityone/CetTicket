@@ -58,10 +58,16 @@ class TicketHandler(BaseHandler):
             except TicketNotFound:
                 result['error'] = True
             return result
-
-        result = yield self.executor.submit(find_ticket_number,
+        
+        ticket = yield self.executor.submit(find_ticket_number,
                                             province, school, name, cet_type=cet)
-        self.write(json.dumps(result))
+        def get_score(ticket, name):
+            try:
+                return CetTicket.get_score(ticket, name)
+            except:
+                return dict(error=True)
+        result = yield self.executor.submit(get_score, ticket, name)
+        self.render('result.html', result=result)
 
 
 class Application(tornado.web.Application):
